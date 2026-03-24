@@ -1,0 +1,15 @@
+name: Portfolio CI/CD
+
+on:
+  push:
+    branches:
+      - main   # runs when you push to main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3

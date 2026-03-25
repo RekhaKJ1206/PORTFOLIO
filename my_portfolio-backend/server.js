@@ -19,9 +19,38 @@ const PORT = process.env.PORT || 5000;
 // Track MongoDB connection status
 let mongoConnected = false;
 
+// CORS Configuration - Allow local dev and production origins
+const corsOptions = {
+    origin: function (origin, callback) {
+        const allowedOrigins = [
+            'http://localhost:5500',
+            'http://127.0.0.1:5500',
+            'http://localhost:3000',
+            'http://127.0.0.1:3000',
+            'http://localhost:5000',
+            'http://127.0.0.1:5000',
+            'https://RekhaKJ1206.github.io',
+            'https://rekha-portfolio-app.onrender.com'
+        ];
+        
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('CORS not allowed'));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 200
+};
+
 // MIDDLEWARE
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
 
 // HEALTH CHECK ROUTE (for Render to verify app is running)
 app.get('/', (req, res) => {

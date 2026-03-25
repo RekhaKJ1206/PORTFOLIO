@@ -25,6 +25,9 @@ jobs:
       # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          submodules: false
+          fetch-depth: 0
 
       # 2. Deploy to Render using deploy hook
       - name: Deploy to production

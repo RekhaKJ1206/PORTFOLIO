@@ -3,7 +3,15 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
-const Contact = require('./models/Contact');
+
+// Try to load Contact model, but don't crash if it fails
+let Contact;
+try {
+    Contact = require('./models/Contact');
+} catch (err) {
+    console.log('⚠️ Warning: Could not load Contact model:', err.message);
+    Contact = null;
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -57,6 +65,14 @@ app.post('/api/contact', async (req, res) => {
 
     if (!name || !email || !message) {
         return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Check if Contact model is available
+    if (!Contact) {
+        return res.status(503).json({
+            error: 'Contact service temporarily unavailable. Please try again later.',
+            service: false
+        });
     }
 
     // Check if MongoDB is connected

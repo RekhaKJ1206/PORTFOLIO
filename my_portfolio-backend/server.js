@@ -33,16 +33,21 @@ const corsOptions = {
             'https://rekha-portfolio-app.onrender.com'
         ];
         
+        console.log('📨 CORS Request from origin:', origin);
+        
         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            console.log('✅ CORS allowed for:', origin);
             callback(null, true);
         } else {
+            console.log('❌ CORS blocked for:', origin);
             callback(new Error('CORS not allowed'));
         }
     },
     credentials: true,
-    methods: ['GET', 'POST', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    maxAge: 3600
 };
 
 // MIDDLEWARE

@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: portfolio-backend
+    env: node
+    plan: free
+    repo: https://github.com/RekhaKJ1206/portfolio
+    branch: main
+    buildCommand: npm install && npm test && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    healthCheckIntervalSeconds: 10
+    envVars:
+      - key: PORT
+        value: "5000"
